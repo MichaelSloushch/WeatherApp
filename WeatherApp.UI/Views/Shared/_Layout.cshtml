@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <style>
+        
+         #root {
+             font-size: xx-large;
+         }
+
+        .body-content {
+            margin-left: 25%;
+        }
+
+        #citiesDivId {
+            border-left: 5px solid blue;
+        }
+
+        #citiesDivId p {
+            cursor: pointer;
+            width: fit-content;
+        }
+
+
+        #citiesDivId p.active {
+            border: 3px solid blue;
+        }
+
+        #rootId {
+            font-size: large;
+        }
+
+        .actionImg {
+            width: 20px;
+        }
+
+        .alert {
+            position: absolute;
+        }
+
+        #linkId {
+            font-size: 14px;
+            alignment: center
+        }
+
+        .disabled {
+            pointer-events: none;
+            opacity: 0.4;
+        }
+    </style>
+    
+    <script>
+
+        //base model for selected city from the cities list
+        var selectedCity = {};
+        //api list to call api controllers
+        var apis = {
+            //value would be set by page itself
+            searchForCitiesApi: "",
+            addToFavoriteApi: "/api/FavoriteCities/Add",
+            getTemparature: "/api/Temperature/Get?cityId=",
+        };
+
+       //get and display temperature
+       function RenderTemperature() {
+            $.ajax({
+                type: 'get',
+                url: apis.getTemparature + selectedCity.Id,
+                success: function (data) {
+                    $('#cityNameId').html(selectedCity.Name);
+                    $('#weatherTextId').html(data.Temperature + " " + data.WeatherText);
+                }
+            });
+        }
+        //add and configurate each of the cities search result 
+        function CreateElementForCityDisplay(city) {
+            var p = document.createElement("p");
+            p.innerHTML = city.Name;
+            p.setAttribute("data-id", city.Id);
+            p.onclick = function () {
+                selectedCity = city;
+                RenderTemperature(city);
+                ($(this).parent().children()).removeClass('active');
+                $(this).addClass('active');
+                $('#favoriteCityButtonId').removeClass('disabled');
+            }
+            return p;
+        }
+        //process search cities result
+        function RenderCities(cities) {
+            $("#citiesDivId").empty();
+            cities.forEach(x => {
+                var cityElement = CreateElementForCityDisplay(x);
+                $("#citiesDivId").append(cityElement);
+            });
+        }
+        //get cities from the server
+        //searchForCitiesApi is set by each view 
+        function SearchForCities() {
+            var searchText = $('#searchText').val();
+            if (searchText.length === 0) searchText = "";
+            $.ajax({
+                type: 'get',
+                url: apis.searchForCitiesApi + searchText,
+                success: function (data) {
+                    if (data) {
+                        $('#searchText').val("");
+                        RenderCities(data);
+                    }
+                }
+            });
+        }
+        // each of the view has this method and suppossed to implement it
+        function renderUi() {
+            console.log('warning! not implemented');
+        }
+        $(document).ready(function () {
+            //calling render on page loaded
+            renderUi();
+        });
+    </script>
+</head>
+<body>
+    <div class="container body-content">
+        @RenderBody()
+        <a id="linkId" href="">Go to favorites</a>
+
+        <div id="rootId" class="row">
+            <div id="weatherBlockId" class="col-md-4">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button onclick="SearchForCities()">Search</button>
+                        <input id="searchText" placeholder="Enter text for search" />
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-4">
+                        <p id="cityNameId"></p>
+                        <p id="weatherTextId"></p>
+                    </div>
+                    <div id="WeatherResultId" class="col-md-8">
+                        <img class="actionImg" src="/Content/img/AddToFavorite.png" />
+                        <button id="favoriteCityButtonId" class="disabled"></button>
+                        <div id="successAlertId" class="alert alert-success hidden">
+                            Successfully added.
+                        </div>
+                        <div id="errorAlertId" class="alert alert-danger hidden">
+                            Item already been added
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="citiesDivId" class="col-md-6">
+                <p>Search Results</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

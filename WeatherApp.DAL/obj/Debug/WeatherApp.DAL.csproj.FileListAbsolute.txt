@@ -1,0 +1,8 @@
+c:\users\moshe.s\source\repos\WeatherApp\WeatherApp.DAL\bin\Debug\WeatherApp.DAL.dll
+c:\users\moshe.s\source\repos\WeatherApp\WeatherApp.DAL\bin\Debug\WeatherApp.DAL.pdb
+c:\users\moshe.s\source\repos\WeatherApp\WeatherApp.DAL\bin\Debug\Dapper.dll
+c:\users\moshe.s\source\repos\WeatherApp\WeatherApp.DAL\bin\Debug\Dapper.xml
+c:\users\moshe.s\source\repos\WeatherApp\WeatherApp.DAL\obj\Debug\WeatherApp.DAL.csprojResolveAssemblyReference.cache
+c:\users\moshe.s\source\repos\WeatherApp\WeatherApp.DAL\obj\Debug\WeatherApp.DAL.csproj.CoreCompileInputs.cache
+c:\users\moshe.s\source\repos\WeatherApp\WeatherApp.DAL\obj\Debug\WeatherApp.DAL.dll
+c:\users\moshe.s\source\repos\WeatherApp\WeatherApp.DAL\obj\Debug\WeatherApp.DAL.pdb

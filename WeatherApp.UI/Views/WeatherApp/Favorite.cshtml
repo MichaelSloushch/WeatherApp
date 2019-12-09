@@ -1,0 +1,58 @@
+<script>
+
+
+
+ apis.searchForCitiesApi = "/api/FavoriteCities/GetFiltered?filter=";
+ $(document).ready(function() {
+     SearchForCities();
+     });
+
+
+//render UI for favorite cities page
+ function renderUi() {
+     $('#favoriteCityButtonId').on('click', DeleteFromFavorite);
+     $('#favoriteCityButtonId').html('Delete from favorites');
+     $('#successAlertId').html('Susseccfully removed');
+     $('#errorAlertId').html('Failed to remove, try again');
+     $('#linkId').html('Go back to search');
+     $('#linkId').attr('href', "@Url.Action("Search", "WeatherApp")");
+ }
+
+//process delete from favorite action
+ function DeleteFromFavorite() {
+
+     $.ajax({
+         type: 'POST',
+         url: '/api/FavoriteCities/Delete?cityId=' + selectedCity.Id,
+
+         success: function (data) {
+             var alert;
+             if (data) {
+                 alert = $('#successAlertId');
+             } else {
+                 alert = $('#errorAlertId');
+             }
+             $("#citiesDivId > [data-id='" + selectedCity.Id+"']").remove();
+     
+             alert.removeClass('hidden');
+             $('#favoriteCityButtonId').addClass('disabled');
+             setTimeout(function() {
+                 alert.addClass('hidden') 
+
+             }, 1700);
+         }
+     });
+ }
+
+
+
+
+</script>
+
+<style>
+    h2 {
+        margin-left: 25%;
+    }
+</style>
+
+<h2>Favorites</h2>

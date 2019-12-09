@@ -1,0 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace WeatherApp.UI.Models.View
+{
+    public class WeatherforecastViewModel
+    {
+        public float Temperature { get; set; }
+        public string WeatherText { get; set; }
+    }
+}
